@@ -1,0 +1,2 @@
+Branch pruning completed successfully.
+Remaining remote branch: main
