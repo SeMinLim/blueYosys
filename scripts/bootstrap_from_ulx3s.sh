@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# The temporary PR workflow archives this script's complete output while bootstrapping.
 readonly script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly transport_b64="${script_dir}/.bootstrap_transport.b64"
 readonly verified_b64="${script_dir}/.bootstrap_verified.b64"
