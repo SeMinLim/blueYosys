@@ -1,0 +1,4 @@
+Repository: https://github.com/SeMinLim/ulx3s_bsv.git
+Ref: master
+Commit: a3652e203c2a4f78bc54bdbecd1eedc804d4eab4
+Imported by: scripts/bootstrap_from_ulx3s.sh
