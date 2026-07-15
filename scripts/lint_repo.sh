@@ -56,6 +56,26 @@ for project in "${projects[@]}"; do
 done
 make --no-print-directory -C projects/test -n print-config BOARD=ice40 >/dev/null
 
+if grep -R -nE 'APIO_BOARD|(^|[[:space:]])apio[[:space:]]+(init|build|upload)' \
+    Makefile mk boards projects/*/Makefile; then
+    echo "The repository build must not depend on APIO." >&2
+    exit 1
+fi
+
+grep -qF 'BOARD_YOSYS_SYNTH := synth_ecp5' boards/ulx3s/board.mk
+grep -qF 'BOARD_PNR_TOOL ?= nextpnr-ecp5' boards/ulx3s/board.mk
+grep -qF 'BOARD_PACK_TOOL ?= ecppack' boards/ulx3s/board.mk
+
+dry_run="$(make --no-print-directory -C projects/test -n synth BOARD=ulx3s)"
+grep -q 'synth_ecp5' <<<"${dry_run}"
+grep -q 'nextpnr-ecp5' <<<"${dry_run}"
+grep -q 'ecppack' <<<"${dry_run}"
+if grep -qE '(^|[[:space:]])apio([[:space:]]|$)' <<<"${dry_run}"; then
+    echo "The synthesis dry run unexpectedly invokes APIO." >&2
+    exit 1
+fi
+make -C tools clean
+
 test -L src/Top.bsv
 test -L src/cpp
 test -f boards/ulx3s/constraints/ulx3s.lpf
