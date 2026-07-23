@@ -68,6 +68,7 @@ BSCFLAGS_BSIM := \
 	-l pthread
 
 BSIM_CPPFILES ?= $(wildcard $(PROJECT_DIR)/cpp/*.cpp) $(wildcard $(ROOTDIR)/lib/cpp/*.cpp)
+BSIM_CXXFLAGS ?= -Xc++ -I$(ROOTDIR)/lib/cpp
 INOUT_FIXER := $(ROOTDIR)/scripts/fix_generated_inout.py
 REPORT_GENERATOR := $(ROOTDIR)/scripts/generate_build_report.py
 GENERATED_TOP := $(BUILD_DIR)/$(TOP_MODULE).v
@@ -200,7 +201,7 @@ bsim: check-bsc
 	mkdir -p $(BSIM_DIR)
 	$(BSC) $(BSCFLAGS_COMMON) $(BSCFLAGS_BSIM) $(DEBUGFLAGS) \
 		-p +:$(BSV_PATH) -sim -u -g $(BSIM_TOP_MODULE) $(BSIM_TOP_SOURCE)
-	$(BSC) $(BSCFLAGS_COMMON) $(BSCFLAGS_BSIM) $(DEBUGFLAGS) \
+	$(BSC) $(BSCFLAGS_COMMON) $(BSCFLAGS_BSIM) $(DEBUGFLAGS) $(BSIM_CXXFLAGS) \
 		-sim -e $(BSIM_TOP_MODULE) -o $(BSIM_DIR)/bsim \
 		$(BSIM_DIR)/*.ba $(BSIM_CPPFILES)
 
